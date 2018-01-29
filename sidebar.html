@@ -3,8 +3,7 @@
 	<head>
 		<base target="_top">
 		<?!= include('jscolor'); ?>
-		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.1/css/materialize.min.css">
+		<link rel="stylesheet" href="https://ssl.gstatic.com/docs/script/css/add-ons1.css">
 
 		<style>
 html {
@@ -12,8 +11,49 @@ html {
 	overflow-y: scroll;
 }
 
-.colorCollection li span {
+.colorCollection {
+	display: flex;
+	flex-wrap: wrap;
+	flex-direction: row;
+	justify-content: space-around;
+}
+
+.colorCollection li span.text {
 	text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+}
+
+.expand ~ div {
+	max-height: 999px;
+	overflow: hidden;
+	white-space: nowrap;
+	-webkit-transition: all 0.5s ease;
+	-moz-transition: all 0.5s ease;
+	-o-transition: all 0.5s ease;
+	transition: all 0.5s ease;
+}
+
+.expand:not(:checked) ~ div {
+	max-height: 0px !important;
+	opacity: 0;
+	padding: 0;
+}
+
+.close-icon:before {
+	display: inline-block;
+	content: "\2716";
+	color: #787878;
+	padding-left: 5px;
+	font-size: 32;
+	cursor: pointer;
+}
+
+.expand-pane {
+	padding-bottom: 13px;
+	background-color: rgb(250,250,250);
+}
+
+ul {
+	list-style-type: none;
 }
 		</style>
 
@@ -22,10 +62,10 @@ html {
 			}
 
 			function onSuccess() {
-				google.script.host.close();
+				// google.script.host.close();
 			}
 
-			function saveAndClose() {
+			function getOptions() {
 				var options = {};
 				var randomColors = document.getElementById('randomColors').checked;
 				var basicColors = document.getElementById('basicColors').checked;
@@ -52,8 +92,15 @@ html {
 				options['customColors'] = colorString;
 
 				options.byWord = document.getElementById('byWord').checked;
+				return options;
+			}
 
-				google.script.run.withSuccessHandler(onSuccess).withFailureHandler(onFailure).setOptions(options);
+			function styleSelection() {
+				google.script.run.withSuccessHandler(onSuccess).withFailureHandler(onFailure).styleSelectionWithOptions(getOptions());
+			}
+
+			function saveOptions() {
+				google.script.run.withSuccessHandler(onSuccess).withFailureHandler(onFailure).setOptions(getOptions());
 			}
 
 			function removeColor(link) {
@@ -66,7 +113,7 @@ html {
 				li.className = "collection-item";
 				li.style.color = color;
 				li.setAttribute("color", color);
-				li.innerHTML = '<div><span>' + color + '</span><a class="secondary-content" onclick="removeColor(this)"><i class="material-icons">close</i></a></div>';
+				li.innerHTML = '<div><span class="text">' + color + '</span><span class="close-icon" onclick="removeColor(this)"></span></div>';
 
 				var colorCollection = document.getElementById("colorCollection");
 				colorCollection.appendChild(li);
@@ -89,107 +136,88 @@ html {
 		</script>
 	</head>
 	<body>
-		<div class="container">
+		<div class="sidebar">
 			<h1>Options</h1>
 
-			<form action="#">
-				<ul class="collapsible" data-collapsible="accordion">
-					<li>
-						<div class="collapsible-header">
-							<input type="radio" id="basicColors" name="options" <?= options.method == "basicColors" ? "checked" : "" ?> />
-							<label for="basicColors">Basic colors</label>
-						</div>
-					</li>
-					<li>
-						<div class="collapsible-header">
-							<div class="row">
-								<div class="col s10">
-									<input type="radio" id="randomColors" name="options" <?= options.method == "randomColors" ? "checked" : "" ?> />
-									<label for="randomColors">Random colors</label>
-								</div>
-								<div class="col s2">
-									<i class="material-icons">expand_more</i>
-								</div>
-							</div>
-						</div>
-						<div class="collapsible-body"><span>
-								<div class="row">
-									<p class="col s12">
-									Use randomly generated nice colors.
-									</p>
-									<div class="input-field col s12">
-										<select name="hue" id="hue">
-											<option value="default">Default</option>
-											<option value="red">Red</option>
-											<option value="orange">Orange</option>
-											<option value="yellow">Yellow</option>
-											<option value="green">Green</option>
-											<option value="blue">Blue</option>
-											<option value="purple">Purple</option>
-											<option value="pink">Pink</option>
-											<option value="monochrome">Monochrome</option>
-										</select>
-										<label>Hue</label>
-									</div>
+			<div class="block">
+				<input id="byWord" type="checkbox" <?= options.byWord ? "checked" : "" ?> />
+				<label for="byWord">Color word by word</label>
+			</div>
 
-									<div class="input-field col s12">
-										<select name="luminosity" id="luminosity">
-											<option value="default">Default</option>
-											<option value="bright">Bright</option>
-											<option value="light">Light</option>
-											<option value="dark">Dark</option>
-										</select>
-										<label>Luminosity</label>
-									</div>
-								</div>
-							</span></div>
+			<div class="block">
+				Color generation method:
+				<ul>
+					<li>
+						<input type="radio" id="basicColors" name="options" class="expand" <?= options.method == "basicColors" ? "checked" : "" ?> />
+						<label for="basicColors"><b>Basic colors</b></label>
+
+						<div class="expand-pane">
+							<p>
+							Use the basic palette of colors.
+							</p>
+						</div>
 					</li>
 					<li>
-						<div class="collapsible-header">
-							<div class="row">
-								<div class="col s10">
-									<input type="radio" id="customColors" name="options" <?= options.method == "customColors" ? "checked" : "" ?> />
-									<label for="customColors">Custom colors</label>
+						<div>
+							<input type="radio" id="randomColors" name="options" class="expand" <?= options.method == "randomColors" ? "checked" : "" ?> />
+							<label for="randomColors"><b>Random colors</b></label>
+
+							<div class="expand-pane">
+								<p>
+								Use randomly generated nice colors.
+								</p>
+								<div class="inline form-group">
+									<label for="hue">Hue</label>
+									<select id="hue">
+										<option value="default">Default</option>
+										<option value="red">Red</option>
+										<option value="orange">Orange</option>
+										<option value="yellow">Yellow</option>
+										<option value="green">Green</option>
+										<option value="blue">Blue</option>
+										<option value="purple">Purple</option>
+										<option value="pink">Pink</option>
+										<option value="monochrome">Monochrome</option>
+									</select>
 								</div>
-								<div class="col s2">
-									<i class="material-icons">expand_more</i>
+
+								<div class="inline form-group">
+									<label for="luminosity">Luminosity</label>
+									<select id="luminosity">
+										<option value="default">Default</option>
+										<option value="bright">Bright</option>
+										<option value="light">Light</option>
+										<option value="dark">Dark</option>
+									</select>
 								</div>
 							</div>
 						</div>
-						<div class="collapsible-body"><span>
-								<div class="row">
-									<p class="col s12">
-									Pick which colors should be chosen.
-									</p>
-									<br />
-									<div class="col s4">
-										<input class="jscolor" id="colorPicker" />
-									</div>
-									<div class="col s6 offset-s2">
-										<a class="waves-effect waves-light btn" style="width: 100%;" onclick="submitColor()">Add</a>
-									</div>
-									<div class="col s12">
-										<ul class="collection colorCollection" id="colorCollection"></ul>
-									</div>
-								</div>
-							</span></div>
+					</li>
+					<li>
+						<input type="radio" id="customColors" name="options" class="expand" <?= options.method == "customColors" ? "checked" : "" ?> />
+						<label for="customColors"><b>Custom colors</b></label>
+
+						<div class="expand-pane">
+							<p>
+							Pick which colors should be chosen.
+							</p>
+							<div class="block" style="display: flex; justify-content: space-around;">
+								<input class="jscolor" type="text" size="6" id="colorPicker">
+								<button onclick="submitColor()">Add</button>
+							</div>
+							<div class="colorCollection block" id="colorCollection"></div>
+						</div>
 					</li>
 				</ul>
+			</div>
 
-				<input id="byWord" type="checkbox" <?= options.byWord ? "checked" : "" ?> />
-				<label for="byWord">By word</label>
-
-				<a class="waves-effect waves-light btn" style="margin-bottom: 15px;" onclick="saveAndClose()">Save and close</a>
-			</form>
+			<div class="block">
+				<button class="action" onclick="styleSelection()">Style</button>
+				<button onclick="saveOptions()">Save</button>
+			</div>
 		</div>
 
-		<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.1/js/materialize.min.js"></script>
 		<script>
-			$(document).ready(function() {
-				$('select').material_select();
-				$('.collapsible').collapsible();
-			});
 			selectOption(document.getElementById("hue"), <?= options.hue ?>);
 			selectOption(document.getElementById("luminosity"), <?= options.luminosity ?>);
 			var colorStrings = <?= options.customColors ?>.split(";");

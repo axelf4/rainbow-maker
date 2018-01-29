@@ -8,7 +8,7 @@
 function onOpen(e) {
 	DocumentApp.getUi().createAddonMenu()
 		.addItem('Style selection', 'styleSelection')
-		.addItem('Advanced options', 'showSidebar')
+		.addItem('Pick style', 'showSidebar')
 		.addToUi();
 }
 
@@ -34,7 +34,8 @@ function getSelectionParts() {
 	// Only modify elements that can be edited as text; skip images and other non-text elements.
 		.filter(function(e) { return e.getElement().editAsText; })
 		.map(function(e) {
-			return { text: e.getElement().editAsText(), start: e.getStartOffset(), end: e.getEndOffsetInclusive() + 1 };
+			return e.isPartial() ? { text: e.getElement().editAsText(), start: e.getStartOffset(), end: e.getEndOffsetInclusive() + 1 }
+				: { text: e.getElement().editAsText(), start: 0, end: e.getElement().editAsText().getText().length };
 		}) : [];
 };
 
@@ -59,7 +60,7 @@ function setStyleForSelection(options, getColor) {
 			}
 		}
 	} catch(e) {
-		ui.alert("Error", "Something went wrong... Sorry!" + e, ui.ButtonSet.OK);
+		ui.alert("Error", "Something went wrong... Sorry!", ui.ButtonSet.OK);
 	}
 }
 
@@ -108,9 +109,8 @@ var getColorGenerator = function(options) {
 	}
 }
 
-function styleSelection() {
+function styleSelectionWithOptions(options) {
 	const ui = DocumentApp.getUi();
-	const options = readOptions();
 	const colorGenerator = getColorGenerator(options);
 
 	try {
@@ -118,6 +118,11 @@ function styleSelection() {
 	} catch (e) {
 		ui.alert('Error', 'The operator produced an error: ' + e.message, ui.ButtonSet.OK);
 	}
+}
+
+function styleSelection() {
+	const options = readOptions();
+	styleSelectionWithOptions(options);
 }
 
 function setOptions(options) {
