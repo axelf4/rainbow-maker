@@ -22,42 +22,75 @@ body {
 		</style>
 	</head>
 	<body>
-		<div class="container-fluid">
+		<div class="container center">
 			<h1 class="display-2"><img src="https://lh3.googleusercontent.com/sZJShLmCKK9CkpMIFSJqsTEaArIaVGjFbbYx3RkZyctXkLJHvrIVeRcA2i7M9Cuyu9E4w47S1LQ=w50-h50-e365">Rainbow Maker</h1>
 
 			<div class="jumbotron">
-				<div class="media">
-					<div class="media-body">
-						<p class="lead">
-						Is your document dull? Is the text making you throw up? Or do
-						you just wish you could have more rainbows?
-						</p>
-						Rainbow Maker is a Google Docs add-on that solves all these
-						problems and more, by giving you the option of stylizing your
-						everyday text. After just a few weeks of use, you'll never get
-						that sweet rainbow taste of your tongue.
+				<div class="col-md-12">
+					<img class="float-md-right" src="https://lh3.googleusercontent.com/93vjTBTxL7Qg1MwuwTeY0bn85ak8RgC5UmSCmhecsabt7m9-iBKJhxp2zLhb4n7m6lqkIjBK0g=w220-h140-e365">
 
-						Get it from <a href="https://chrome.google.com/webstore/detail/rainbow-maker/ocednkamlohenonmlbemgnibknganijf?utm_source=permalink">here</a>.
-					</div>
-
-					<img class="mr-3" src="https://lh3.googleusercontent.com/93vjTBTxL7Qg1MwuwTeY0bn85ak8RgC5UmSCmhecsabt7m9-iBKJhxp2zLhb4n7m6lqkIjBK0g=w220-h140-e365">
-				</div>
-
-				<blockquote class="blockquote mt-5">
-					<p class="mb-0">
-					Previously I had to go through the hassle of making my own rainbows. &mdash; William J.
+					<p class="lead">
+					Is your document dull? Is the text making you throw up? Or do
+					you just wish you could have more rainbows?
 					</p>
-				</blockquote>
+					Rainbow Maker is a Google Docs add-on that solves all these
+					problems and more, by giving you the option of stylizing your
+					everyday text. After just a few weeks of use, you'll never get
+					that sweet rainbow taste of your tongue.
+
+					Get it from <a href="https://chrome.google.com/webstore/detail/rainbow-maker/ocednkamlohenonmlbemgnibknganijf?utm_source=permalink">here</a>.
+
+					<blockquote class="blockquote mt-5">
+						<p class="mb-0">
+						Previously I had to go through the hassle of making my own rainbows. &mdash; William J.
+					</blockquote>
+				</div>
 			</div>
 
-
 			<h2 class="display-4">Screenshots</h2>
-			<img src="https://lh3.googleusercontent.com/r7hzFtUZJqr7psqz6oloAvHYQd7NrHaspUpVNmxWr6fccv5PL64Wm9yEjOqrL2EEiGAEb90H=w640-h400-e365">
+			<div class="text-center">
+				<img class="img-fluid" alt="Screenshot"
+									   src="https://lh3.googleusercontent.com/r7hzFtUZJqr7psqz6oloAvHYQd7NrHaspUpVNmxWr6fccv5PL64Wm9yEjOqrL2EEiGAEb90H=w640-h400-e365">
+			</div>
 
-			<h2 class="display-4">Privacy Policy</h2>
-			Rainbow Maker or its affiliates do NOT, in any way, store or
-			collect any private user data, with the exception of user privided
-			options.
+			<div id="privacy-policy" class="jumbotron mt-4">
+				<h2 class="display-4">Privacy Policy</h2>
+				<p>
+				Rainbow Maker does NOT, in any way, collect user data.  We need
+				access to your current document only to change the color of your
+				selection, nothing more; nothing less. No text is stored anywhere,
+				nor is it read by anyone other than possibly you.  Usage of Rainbow
+				Maker is completely anonymous.  If you would desire, you are free
+				to access the source code and make your own copy of the software,
+				provided you comply with the license.
+
+				<p>
+				<h3>Google</h3>
+				Our add-ons for Google Docs exist on Google's servers. You need a
+				Google-account to use our add-ons and through doing that you agree
+				to their terms of usage.
+
+				<p>
+				<h3>Third-party sources</h3>
+				There are none.
+
+				<p>
+				<h3>Safety</h3>
+				To protect the little of your information that we process we ensure
+				reasonable precautions and follow industry best practices.
+				<p>
+				<h4>Storage</h4>
+				The settings of the add-on are stored on Google's servers through the
+				<a href="https://developers.google.com/apps-script/reference/properties/properties-service"><code>PropertiesService</code></a>
+				API. Only you have access to your stored settings.
+				<p>
+				<h4>Cookies</h4>
+				We do NOT store any cookies. The software doesn't even eat cookies. I reckon it is allergic.
+
+				<p>
+				<h3>Changes to this privacy policy</h3>
+				We do NOT reserve the right to change this privacy policy ever.
+			</div>
 
 			<h2 class="display-4">Frequently asked questions</h2>
 			<h3>Rainbow Maker won't show up?</h3>
@@ -71,10 +104,9 @@ body {
 			<h3>Is it open source?</h3>
 			Yes, the <a src="https://github.com/axelf4/rainbow-maker">source
 				code is hosted on GitHub</a> under the GPLv3 license.
-
 		</div>
 
-		<footer class="page-footer font-small blue pt-4">
+		<footer class="page-footer font-small blue pt-4 mt-5">
 			<div class="footer-copyright text-center py-3">&copy; 2018 Copyright: Axel Forsman</div>
 		</footer>
 
