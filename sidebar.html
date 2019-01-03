@@ -123,16 +123,6 @@ ul {
 				var color = "#" + document.getElementById("colorPicker").jscolor;
 				addColor(color);
 			}
-
-			function selectOption(select, value) {
-				for (var i = 0, length = select.options.length; i < length; ++i) {
-					if(select.options[i].value == value) {
-						select.selectedIndex = i;
-						return;
-					}
-				}
-				throw "Could not find value in select.";
-			}
 		</script>
 	</head>
 	<body>
@@ -169,25 +159,25 @@ ul {
 								<div class="inline form-group">
 									<label for="hue">Hue</label>
 									<select id="hue">
-										<option value="default">Default</option>
-										<option value="red">Red</option>
-										<option value="orange">Orange</option>
-										<option value="yellow">Yellow</option>
-										<option value="green">Green</option>
-										<option value="blue">Blue</option>
-										<option value="purple">Purple</option>
-										<option value="pink">Pink</option>
-										<option value="monochrome">Monochrome</option>
+										<option value="default" <?= options.hue == "default" ? "selected" : "" ?>>Default</option>
+										<option value="red" <?= options.hue == "red" ? "selected" : "" ?>>Red</option>
+										<option value="orange" <?= options.hue == "orange" ? "selected" : "" ?>>Orange</option>
+										<option value="yellow" <?= options.hue == "yellow" ? "selected" : "" ?>>Yellow</option>
+										<option value="green" <?= options.hue == "green" ? "selected" : "" ?>>Green</option>
+										<option value="blue" <?= options.hue == "blue" ? "selected" : "" ?>>Blue</option>
+										<option value="purple" <?= options.hue == "purple" ? "selected" : "" ?>>Purple</option>
+										<option value="pink" <?= options.hue == "pink" ? "selected" : "" ?>>Pink</option>
+										<option value="monochrome" <?= options.hue == "monochrome" ? "selected" : "" ?>>Monochrome</option>
 									</select>
 								</div>
 
 								<div class="inline form-group">
 									<label for="luminosity">Luminosity</label>
 									<select id="luminosity">
-										<option value="default">Default</option>
-										<option value="bright">Bright</option>
-										<option value="light">Light</option>
-										<option value="dark">Dark</option>
+										<option value="default" <?= options.luminosity == "default" ? "selected" : "" ?>>Default</option>
+										<option value="bright" <?= options.luminosity == "bright" ? "selected" : "" ?>>Bright</option>
+										<option value="light" <?= options.luminosity == "light" ? "selected" : "" ?>>Light</option>
+										<option value="dark" <?= options.luminosity == "dark" ? "selected" : "" ?>>Dark</option>
 									</select>
 								</div>
 							</div>
@@ -218,8 +208,6 @@ ul {
 		</div>
 
 		<script>
-			selectOption(document.getElementById("hue"), <?= options.hue ?>);
-			selectOption(document.getElementById("luminosity"), <?= options.luminosity ?>);
 			var colorStrings = <?= options.customColors ?>.split(";");
 			if (colorStrings[0] !== "") for (var i = 0, length = colorStrings.length; i < length; ++i) {
 				addColor(colorStrings[i]);
