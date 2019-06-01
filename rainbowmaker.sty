@@ -1,0 +1,29 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{rainbowmaker}[2019/06/01 rainbow bliss]
+
+\RequirePackage{xcolor}
+
+\makeatletter
+
+\def\@randomcolor{%
+	\definecolor{randomcolor}{RGB}{
+		\pdfuniformdeviate 256,
+		\pdfuniformdeviate 256,
+		\pdfuniformdeviate 256
+	}%
+	\color{randomcolor}%
+}
+
+\def\@assignthencheck{\afterassignment\@charloop\let\xchar= }
+\def\@charloop{%
+	\if\relax\xchar
+		\let\next=\relax
+	\else
+		\@randomcolor{}\xchar\let\next=\@assignthencheck
+	\fi
+	\next
+}
+
+\def\rainbowmaker#1{\@assignthencheck#1\relax}
+
+\makeatother
